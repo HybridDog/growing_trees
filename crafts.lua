@@ -28,7 +28,7 @@ function growing_trees_place_sprout(pos)
              bottom_node.name == "default:dirt_with_grass" then
 
             minetest.env:add_node(pos,{type=node,name="growing_trees:trunk"})
-            minetest.env:add_node(pos_above,{type=node,name="growing_trees:sprout"})
+            minetest.env:add_node(pos_above,{type=node,name="growing_trees:trunk_sprout"})
             return true
         end
     end

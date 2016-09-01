@@ -44,7 +44,7 @@ function issamepos(pos1,pos2)
 	return false
 end
 
-
+--is element in table
 -------------------------------------------------------------------------------
 -- name: contains(table_to_check,position)
 --
@@ -66,35 +66,6 @@ function contains(table_to_check,position)
 end
 
 -------------------------------------------------------------------------------
--- name: contains_name(table_to_check,name)
---
--- @brief check if a table contains a specific element
---
--- @param table_to_check table or string to search in
--- @param name name to search
--- @return true/false
--------------------------------------------------------------------------------
-function contains_name(table_to_check,name)
-    if type(table_to_check) == "table" then
-        for i,v in ipairs(table_to_check) do
-            if v == name then
-                return true
-            end
-        end
-
-    else
-        if table_to_check == name then 
-            return true
-        end
-    end
-    
-    return false
-
-end
-
-
-
--------------------------------------------------------------------------------
 -- name: growing_trees_is_tree_structure(pos)
 --
 -- @brief check if node at pos a tree structure (leaves don't count as structure)
@@ -110,10 +81,8 @@ function growing_trees_is_tree_structure(pos)
 		return false
 	end
 	
-	if node.name == "growing_trees:trunk" or
-		growing_trees_is_branch_structure(node.name) or
-		node.name == "growing_trees:sprout" or
-		node.name == "growing_trees:branch_sprout" then
+	if  growing_trees_node_is_type(trunk_type ,node.name) or
+		growing_trees_node_is_type(branch_type ,node.name) then
 		return true
 	end
 	
@@ -122,33 +91,16 @@ end
 
 
 -------------------------------------------------------------------------------
--- name: growing_trees_is_branch_structure(name)
+-- name: growing_trees_get_surface(x,z, min_y, max_y)
 --
--- @brief check if a nodename matches a branch structure
+--! @brief get surface for x/z coordinates
 --
--- @param name nodename to check
--- @return true/false
+--! @param x x-coordinate
+--! @param z z-coordinate
+--! @param min_y minimum y-coordinate to consider
+--! @param max_y maximum y-coordinate to consider
+--! @return y value of surface or nil
 -------------------------------------------------------------------------------
-
-branch_nodes = {
-            "growing_trees:branch",
-            "growing_trees:branch_ukn",
-            "growing_trees:branch_zz",
-            "growing_trees:branch_xx",
-            "growing_trees:branch_xpzp",
-            "growing_trees:branch_xpzm",
-            "growing_trees:branch_xmzp",
-            "growing_trees:branch_xmzm",
-            }
-
-function growing_trees_is_branch_structure(name)
-    if contains_name(branch_nodes,name) then
-        return true
-    end
-    
-    return false
-end
-
 function growing_trees_get_surface(x,z, min_y, max_y)
 
     for runy = min_y, max_y do
@@ -161,4 +113,29 @@ function growing_trees_get_surface(x,z, min_y, max_y)
     end
 
     return nil
+end
+
+-------------------------------------------------------------------------------
+-- name: growing_trees_neighbour_positions(pos,ynodes_too)
+--
+--! @brief get positions of positions sharing a side with pos
+--
+--! @param pos position to get surrounding positions
+--! @param ynodes_too get y neighbours too
+--! @return table of positions
+-------------------------------------------------------------------------------
+function growing_trees_neighbour_positions(pos,ynodes_too)
+	local retval = {}
+	
+	table.insert(retval, {x=pos.x-1,y=pos.y,z=pos.z})
+	table.insert(retval, {x=pos.x+1,y=pos.y,z=pos.z})
+	table.insert(retval, {x=pos.x,y=pos.y,z=pos.z+1})
+	table.insert(retval, {x=pos.x,y=pos.y,z=pos.z-1})
+	
+	if ynodes_too then
+		table.insert(retval, {x=pos.x,y=pos.y+1,z=pos.z})
+		table.insert(retval, {x=pos.x,y=pos.y-1,z=pos.z})
+	end
+	
+	return retval
 end
