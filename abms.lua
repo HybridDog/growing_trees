@@ -21,7 +21,7 @@
 -------------------------------------------------------------------------------
 minetest.register_abm({
         nodenames = { "growing_trees:trunk_sprout" },
-        interval = 30,
+        interval = 180,
         chance = 5,
         action = function(pos, node, active_object_count, active_object_count_wider)
 
@@ -114,7 +114,7 @@ minetest.register_abm({
 -------------------------------------------------------------------------------
 minetest.register_abm({
         nodenames = trunk_static_type,
-        interval = 15,
+        interval = 45,
         chance = 5,
         
         action = function(pos, node, active_object_count, active_object_count_wider)
@@ -129,7 +129,7 @@ minetest.register_abm({
                 end
                 
                 local growpos = growing_trees_get_random_next_to(pos)
-                local node_at_pos = minetest.env:get_node(pos)
+                local node_at_pos = minetest.env:get_node(growpos)
                 
                 if growing_trees_is_tree_structure(growpos) == false and
                     ( node_at_pos.name == "air" or 
@@ -161,11 +161,11 @@ minetest.register_abm({
 -------------------------------------------------------------------------------
 minetest.register_abm({
         nodenames = { "growing_trees:branch_sprout" },
-        interval = 60,
+        interval = 90,
         chance = 5,
         
         action = function(pos, node, active_object_count, active_object_count_wider)
-        	growing_trees_debug("verbose","Growing_Trees: branch_sprout ABM###################")
+            growing_trees_debug("verbose","Growing_Trees: branch_sprout ABM###################")
             local growpos = growing_trees_get_branch_growpos(pos)
             
             if growpos == nil then
