@@ -70,7 +70,7 @@ minetest.register_abm({
                 local node_above = minetest.env:get_node(pos_above)
                 
                 if node_above.name == "air" or
-                    growing_trees_node_is_type(leaves_type,node_above.name) then
+                    growing_trees_node_is_type(leaves_type,node_at_pos_to_grow.name) then
                     
                     minetest.env:remove_node(pos)
                     minetest.env:add_node(pos,{type=node,name="growing_trees:trunk"})
