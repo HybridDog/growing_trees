@@ -12,7 +12,7 @@
 --
 -- Contact sapier a t gmx net
 -------------------------------------------------------------------------------
-local version = "0.0.7"
+local version = "0.0.8"
 
 local growing_trees_modpath = minetest.get_modpath("growing_trees")
 

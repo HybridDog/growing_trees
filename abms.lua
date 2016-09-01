@@ -206,7 +206,7 @@ minetest.register_abm({
                 
                 if (treesize > MAX_TREE_SIZE) then
                     growing_trees_debug("info","Growing_Trees: branch maximum tree size reached")
-                    if math.random < 0.1 then
+                    if math.random() < 0.1 then
                         growing_trees_debug("info","Growing_Trees: aborting branch growth")
                         minetest.env:remove_node(pos)
                         minetest.env:add_node(pos,{type=node,name="growing_trees:leaves"})
