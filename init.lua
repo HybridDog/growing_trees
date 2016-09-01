@@ -1,4 +1,4 @@
-local version = "0.0.1"
+local version = "0.0.2"
 
 local growing_trees_modpath = minetest.get_modpath("growing_trees")
 
@@ -7,47 +7,96 @@ dofile (growing_trees_modpath .. "/branch_functions.lua")
 dofile (growing_trees_modpath .. "/generic_functions.lua")
 
 minetest.register_node("growing_trees:sprout", {
+	description = "Trunk-Sprout (growing_trees)",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	tile_images = {"default_leaves.png"},
-	walkable = true,
-	material = minetest.digprop_leaveslike(1.0),
-	drop =  "default:leaves",
 	paramtype = "light",
+	groups = {snappy=3},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				-- player will get sapling with 1/20 chance
+				items = {'growing_trees:sapling'},
+				rarity = 20,
+			},
+			{
+				-- player will get leaves only if he get no saplings,
+				-- this is because max_items is 1
+				items = {'default:leaves'},
+			}
+		}
+	},
+	sounds = default.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("growing_trees:leaves", {
+	description = "Leaves (growing_trees)",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	tile_images = {"default_leaves.png"},
-	walkable = true,
-	material = minetest.digprop_leaveslike(1.0),
-	drop =  "default:leaves",
 	paramtype = "light",
+	groups = {snappy=3},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				-- player will get sapling with 1/20 chance
+				items = {'growing_trees:sapling'},
+				rarity = 20,
+			},
+			{
+				-- player will get leaves only if he get no saplings,
+				-- this is because max_items is 1
+				items = {'default:leaves'},
+			}
+		}
+	},
+	sounds = default.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("growing_trees:branch_sprout", {
+	description = "Leaves-Sprout (growing_trees)",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	tile_images = {"default_leaves.png"},
-	walkable = true,
-	material = minetest.digprop_leaveslike(1.0),
-	drop =  "default:leaves",
 	paramtype = "light",
+	groups = {snappy=3},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				-- player will get sapling with 1/20 chance
+				items = {'growing_trees:sapling'},
+				rarity = 20,
+			},
+			{
+				-- player will get leaves only if he get no saplings,
+				-- this is because max_items is 1
+				items = {'default:leaves'},
+			}
+		}
+	},
+	sounds = default.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("growing_trees:trunk", {
+	description = "Trunk (growing_trees)",
 	tile_images = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
-	material = minetest.digprop_woodlike(1.0),
-	walkable = true,
+	is_ground_content = true,
+	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=1},
+	sounds = default.node_sound_wood_defaults(),
 	drop =  "default:tree"
 })
 
 
 minetest.register_node("growing_trees:branch", {
+	description = "Branch (growing_trees)",
 	tile_images = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
-	material = minetest.digprop_woodlike(1.0),
-	walkable = true,
+	is_ground_content = true,
+	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=1},
+	sounds = default.node_sound_wood_defaults(),
 	drop =  "default:tree"
 })
 
