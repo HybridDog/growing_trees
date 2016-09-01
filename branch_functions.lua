@@ -251,7 +251,7 @@ function growing_trees_get_distance_from_trunk(pos,branch)
 	if (pos_of_trunk ~= nil) then
 		treesize,tree_root = growing_trees_get_tree_size(pos_of_trunk)
 	else
-		print("ERROR trunk not found")
+		growing_trees_debug("error","Growing_Trees: trunk not found")
 	end
 	
 	return distance,treesize,tree_root

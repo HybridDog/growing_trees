@@ -157,11 +157,18 @@ minetest.register_abm({
                 local branch = {}
             
                 local distance_from_trunk,treesize,tree_root = growing_trees_get_distance_from_trunk(pos,branch)
-                
+                local top_distance = (tree_root.y + treesize) - pos.y
                 --print ("Treesize: " .. treesize .. " Distance: " .. distance_from_trunk)
                 
+                if (top_distance < 0) then
+                    growing_trees_debug("error","Growing_Trees: top_distance calculation wrong")
+                    top_distance = treesize
+                end
+                
                 if treesize ~= 0 and
-                    distance_from_trunk < treesize/4 then
+                    distance_from_trunk < treesize/4 and
+                    ((top_distance > treesize/8) or (distance_from_trunk < top_distance)) 
+                    then
                     minetest.env:remove_node(pos)
                     minetest.env:add_node(pos,{type=node,name="growing_trees:branch"})
                     minetest.env:remove_node(growpos)

@@ -12,7 +12,7 @@
 --
 -- Contact sapier a t gmx net
 -------------------------------------------------------------------------------
-local version = "0.0.3"
+local version = "0.0.4"
 
 local growing_trees_modpath = minetest.get_modpath("growing_trees")
 
@@ -24,10 +24,10 @@ dofile (growing_trees_modpath .. "/nodes.lua")
 dofile (growing_trees_modpath .. "/crafts.lua")
 dofile (growing_trees_modpath .. "/model_selection.lua")
 dofile (growing_trees_modpath .. "/abms.lua")
+dofile (growing_trees_modpath .. "/spawning.lua")
 
 function growing_trees_debug(loglevel,text)
     --print(text)
 end
-
 
 print("growing_trees mod " .. version .. " loaded")

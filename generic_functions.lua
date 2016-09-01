@@ -148,3 +148,17 @@ function growing_trees_is_branch_structure(name)
     
     return false
 end
+
+function growing_trees_get_surface(x,z, min_y, max_y)
+
+    for runy = min_y, max_y do
+        local pos = { x=x,y=runy, z=z }
+        local node_to_check = minetest.env:get_node(pos)
+        
+        if node_to_check.name == "default:dirt_with_grass" then
+            return pos.y
+        end
+    end
+
+    return nil
+end
