@@ -83,7 +83,7 @@ end
 -- @return true/false
 -------------------------------------------------------------------------------
 function growing_trees_pos_is_type(type_declaration,pos)
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 
 	if node ~= nil then
 		if type(type_declaration) == "table" then

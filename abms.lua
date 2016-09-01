@@ -37,7 +37,7 @@ minetest.register_abm({
             local treesize,tree_root = growing_trees_get_tree_size(trunktop)
 
             if treesize > (SLOWDOWN_TREE_GROWTH_SIZE + ((MAX_TREE_SIZE - SLOWDOWN_TREE_GROWTH_SIZE)/2)) then
-                local root_node = minetest.env:get_node(tree_root)
+                local root_node = minetest.get_node(tree_root)
                 growing_trees_debug("verbose","Growing_Trees: Tree should have big trunk does it have? " .. root_node.name)
                 if root_node ~= nil and
                     root_node.name ~= "growing_trees:big_trunk" then
@@ -48,8 +48,8 @@ minetest.register_abm({
 
             --print("Treesize: " .. treesize)
             if (treesize > MAX_TREE_SIZE) then
-                minetest.env:remove_node(pos)
-                minetest.env:add_node(pos,{type=node,name="growing_trees:trunk_top"})
+                minetest.remove_node(pos)
+                minetest.add_node(pos,{type=node,name="growing_trees:trunk_top"})
                 growing_trees_debug("info","Growing_Trees: maximum tree size reached")
                 return
             end
@@ -67,14 +67,14 @@ minetest.register_abm({
                 --print("growing straight")
                 local pos_above = {x= pos.x,y=pos.y+1,z=pos.z}
 
-                local node_above = minetest.env:get_node(pos_above)
+                local node_above = minetest.get_node(pos_above)
 
                 if node_above.name == "air" or
                     growing_trees_node_is_type(leaves_type,node_above.name) then
 
-                    minetest.env:remove_node(pos)
-                    minetest.env:add_node(pos,{type=node,name="growing_trees:trunk"})
-                    minetest.env:add_node(pos_above,{type=node,name="growing_trees:trunk_sprout"})
+                    minetest.remove_node(pos)
+                    minetest.add_node(pos,{type=node,name="growing_trees:trunk"})
+                    minetest.add_node(pos_above,{type=node,name="growing_trees:trunk_sprout"})
 
                     grown = true
                 end
@@ -85,16 +85,16 @@ minetest.register_abm({
                     --print("growing horizontaly")
                     --decide which direction to grow trunk
                     local pos_to_grow_to = growing_trees_get_random_next_to(pos)
-                    local node_at_pos_to_grow = minetest.env:get_node(pos_to_grow_to)
+                    local node_at_pos_to_grow = minetest.get_node(pos_to_grow_to)
 
                     --check if pos is feasable
                     if node_at_pos_to_grow.name == "air" or
                         growing_trees_node_is_type(leaves_type,node_at_pos_to_grow.name) then
 
-	                    minetest.env:remove_node(pos)
-	                    minetest.env:add_node(pos,{type=node,name="growing_trees:trunk"})
+	                    minetest.remove_node(pos)
+	                    minetest.add_node(pos,{type=node,name="growing_trees:trunk"})
 
-	                    minetest.env:add_node(pos_to_grow_to,{type=node,name="growing_trees:trunk_sprout"})
+	                    minetest.add_node(pos_to_grow_to,{type=node,name="growing_trees:trunk_sprout"})
 
 	                    grown = true
 	                end
@@ -129,7 +129,7 @@ minetest.register_abm({
                 end
 
                 local growpos = growing_trees_get_random_next_to(pos)
-                local node_at_pos = minetest.env:get_node(growpos)
+                local node_at_pos = minetest.get_node(growpos)
 
                 if growing_trees_is_tree_structure(growpos) == false and
                     ( node_at_pos.name == "air" or
@@ -141,8 +141,8 @@ minetest.register_abm({
 
                     if distance > 2 and
                          next_to_branch == false then
-                        minetest.env:remove_node(growpos)
-                        minetest.env:add_node(growpos,{type=node,name="growing_trees:branch_sprout"})
+                        minetest.remove_node(growpos)
+                        minetest.add_node(growpos,{type=node,name="growing_trees:branch_sprout"})
                     else
                         growing_trees_debug("verbose","Growing_Trees: NOT adding branch: " .. distance ..  " ntb: " .. dump(next_to_branch) )
                     end
@@ -172,7 +172,7 @@ minetest.register_abm({
             	growing_trees_debug("verbose","Growing_Trees: no growpos found next to " .. dump(pos))
             	return
             end
-            local node_at_pos = minetest.env:get_node(growpos)
+            local node_at_pos = minetest.get_node(growpos)
             growing_trees_debug("verbose","Growing_Trees: fetching growpos information: " .. printpos(growpos) .. " -> " .. node_at_pos.name)
             local tree_structure = growing_trees_is_tree_structure(growpos)
             local next_to_branch = growing_trees_next_to_branch(growpos,pos)
@@ -208,8 +208,8 @@ minetest.register_abm({
                     growing_trees_debug("info","Growing_Trees: branch maximum tree size reached")
                     if math.random() < 0.1 then
                         growing_trees_debug("info","Growing_Trees: aborting branch growth")
-                        minetest.env:remove_node(pos)
-                        minetest.env:add_node(pos,{type=node,name="growing_trees:leaves"})
+                        minetest.remove_node(pos)
+                        minetest.add_node(pos,{type=node,name="growing_trees:leaves"})
                         return
                     end
                 end
@@ -220,8 +220,8 @@ minetest.register_abm({
                     then
                     growing_trees_debug("info","Growing_Trees: growing branch to " .. printpos(growpos))
 
-                    minetest.env:remove_node(growpos)
-                    minetest.env:add_node(growpos,{type=node,name="growing_trees:branch_sprout"})
+                    minetest.remove_node(growpos)
+                    minetest.add_node(growpos,{type=node,name="growing_trees:branch_sprout"})
 
                     growing_trees_place_branch(pos)
                 end
@@ -247,7 +247,7 @@ minetest.register_abm({
         action = function(pos, node, active_object_count, active_object_count_wider)
 
                 if math.random() < 0.3 then
-                    minetest.env:remove_node(pos)
+                    minetest.remove_node(pos)
                 end
             end
 

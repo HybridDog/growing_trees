@@ -57,7 +57,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
         local z_center = min_z + 0.5 * minimum_tree_distance + minimum_tree_distance * i
 
         --check if there is already a growing tree within area
-        local trunkpos = minetest.env:find_node_near({ x=x_center,
+        local trunkpos = minetest.find_node_near({ x=x_center,
                                                         y=growing_trees_get_surface(x_center,z_center,min_y,max_y),
                                                         z=z_center},
                                                         minimum_tree_distance/2, {"growing_trees:trunk"})
@@ -77,8 +77,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
                     local spawnpos = {x=pos.x,y=surface+1,z=pos.z}
                     --print("Growing_Trees: found surface " .. printpos(spawnpos) .. " try: " .. i)
 
-                    local to_near = minetest.env:find_node_near(spawnpos,4,{"default:tree", "growing_trees:trunk"})
-                    local near_enough = minetest.env:find_node_near(spawnpos,8,"default:tree")
+                    local to_near = minetest.find_node_near(spawnpos,4,{"default:tree", "growing_trees:trunk"})
+                    local near_enough = minetest.find_node_near(spawnpos,8,"default:tree")
 
                     --print(dump(to_near) .. " | " .. dump(near_enough))
 

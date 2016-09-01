@@ -47,7 +47,7 @@ end
 --calculate size of trunk pos is element of in blocks
 function growing_trees_get_tree_size(pos)
 
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	local root = pos
 
 	if not growing_trees_pos_is_type(trunk_static_type,pos) then
@@ -125,14 +125,14 @@ function growing_trees_make_trunk_big(root,height)
 
     while runy <  (ymax - (height/2)) and
         current_pos ~= nil do
-        minetest.env:remove_node(current_pos)
-        minetest.env:add_node(current_pos,{type=node,name="growing_trees:big_trunk"})
+        minetest.remove_node(current_pos)
+        minetest.add_node(current_pos,{type=node,name="growing_trees:big_trunk"})
 
         local neighbour = growing_trees_next_to(current_pos, { "growing_trees:trunk" },false)
 
         if neighbour ~= nil then
-            minetest.env:remove_node(neighbour)
-            minetest.env:add_node(neighbour,{type=node,name="growing_trees:big_trunk"})
+            minetest.remove_node(neighbour)
+            minetest.add_node(neighbour,{type=node,name="growing_trees:big_trunk"})
             current_pos = neighbour
         end
 
@@ -143,14 +143,14 @@ function growing_trees_make_trunk_big(root,height)
 
     while runy <  ymax and
         current_pos ~= nil do
-        minetest.env:remove_node(current_pos)
-        minetest.env:add_node(current_pos,{type=node,name="growing_trees:medium_trunk"})
+        minetest.remove_node(current_pos)
+        minetest.add_node(current_pos,{type=node,name="growing_trees:medium_trunk"})
 
         local neighbour = growing_trees_next_to(current_pos, { "growing_trees:trunk" },false)
 
         if neighbour ~= nil then
-            minetest.env:remove_node(neighbour)
-            minetest.env:add_node(neighbour,{type=node,name="growing_trees:medium_trunk"})
+            minetest.remove_node(neighbour)
+            minetest.add_node(neighbour,{type=node,name="growing_trees:medium_trunk"})
             current_pos = neighbour
         end
 

@@ -75,7 +75,7 @@ end
 -------------------------------------------------------------------------------
 --
 function growing_trees_is_tree_structure(pos)
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 
 	if node == nil then
 		return false
@@ -105,7 +105,7 @@ function growing_trees_get_surface(x,z, min_y, max_y)
 
     for runy = min_y, max_y do
         local pos = { x=x,y=runy, z=z }
-        local node_to_check = minetest.env:get_node(pos)
+        local node_to_check = minetest.get_node(pos)
 
         if node_to_check.name == "default:dirt_with_grass" then
             return pos.y
