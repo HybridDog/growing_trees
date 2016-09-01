@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 -- Growing Trees Mod by Sapier
--- 
+--
 -- License GPLv3
 --
 --! @file type_declarations.lua
@@ -23,7 +23,7 @@ branch_type = {
             "growing_trees:branch_xmzm",
             "growing_trees:branch_sprout",
             }
-            
+
 branch_static_type = {
             "growing_trees:branch",
             "growing_trees:branch_ukn",
@@ -34,7 +34,7 @@ branch_static_type = {
             "growing_trees:branch_xmzp",
             "growing_trees:branch_xmzm",
 }
-            
+
 trunk_type = {
             "growing_trees:trunk_top",
 			"growing_trees:trunk",
@@ -69,7 +69,7 @@ function growing_trees_node_is_type(type_declaration,name)
                 return true
             end
         end
-    end    
+    end
     return false
 end
 
@@ -84,11 +84,11 @@ end
 -------------------------------------------------------------------------------
 function growing_trees_pos_is_type(type_declaration,pos)
 	local node = minetest.env:get_node(pos)
-	
+
 	if node ~= nil then
 		if type(type_declaration) == "table" then
 			for i,v in ipairs(type_declaration) do
-				
+
 				if v == node.name then
 					return true
 				end

@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 -- Growing Trees Mod by Sapier
--- 
+--
 -- License GPLv3
 --
 --! @file branch_functions.lua
@@ -35,13 +35,13 @@ function growing_trees_min_distance(pos)
 		runpos = {x=runpos.x,y=runpos.y-1,z=runpos.z}
 		runnode = minetest.env:get_node(runpos)
 	end
-	
-	
+
+
 	local distance_up = 0
-	
+
 	runpos = {x=pos.x,y=pos.y+1,z=pos.z}
 	runnode = minetest.env:get_node(runpos)
-	
+
 	while runnode ~= nil and (
            runnode.name == "air" or
            growing_trees_node_is_type(leaves_type,runnode.name)) do
@@ -68,18 +68,18 @@ end
 -------------------------------------------------------------------------------
 function growing_trees_next_to_branch(pos,origin)
 
-	local node_at_pos = minetest.env:get_node(pos)	
+	local node_at_pos = minetest.env:get_node(pos)
 	growing_trees_debug("verbose","Growing_Trees: looking for branch next to  " .. dump(pos) .. " type is " .. dump(node_at_pos.name))
-	
+
 	if origin ~= nil then
 		local node_origin = minetest.env:get_node(origin)
 		growing_trees_debug("verbose","Growing_Trees: found branch origin at  " .. dump(origin) .. " type is " .. dump(node_origin.name))
 	end
-	
+
 	local neighbourpos = growing_trees_neighbour_positions(pos,true)
-	
+
 	for i,value in ipairs(neighbourpos) do
-		if (growing_trees_pos_is_type(branch_type,value)) and 
+		if (growing_trees_pos_is_type(branch_type,value)) and
 			not issamepos(value,origin) then
 			return true
 		else
@@ -87,7 +87,7 @@ function growing_trees_next_to_branch(pos,origin)
 			growing_trees_debug("verbose","Growing_Trees: node at  " .. printpos(value) .. " of type " .. node.name .. " didn't match")
 		end
 	end
-	
+
 	growing_trees_debug("info","Growing_Trees: not found another branch next to  " .. printpos(pos))
 	return false
 end
@@ -95,7 +95,7 @@ end
 -------------------------------------------------------------------------------
 -- name: growing_trees_next_to(pos,tolookfor,ytoo)
 --
---! @brief find out if a pos is next to a element of type "tolookfor" 
+--! @brief find out if a pos is next to a element of type "tolookfor"
 --
 --! @param pos position to check
 --! @param tolookfor table of node types to look for
@@ -111,7 +111,7 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 	end
 
 	local neighbourpos = growing_trees_neighbour_positions(pos,ytoo)
-	
+
 	for i,value in ipairs(neighbourpos) do
 		if (growing_trees_pos_is_type(tolookfor,value)) then
 			return value
@@ -120,7 +120,7 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 			growing_trees_debug("verbose","Growing_Trees: node at  " .. printpos(value) .. " of type " .. node.name .. " didn't match")
 		end
 	end
-	
+
 	growing_trees_debug("info","Growing_Trees: not found any of " .. dump(tolookfor) .. " next to " ..printpos(pos))
 	return nil
 end
@@ -139,7 +139,7 @@ function growing_trees_get_next_new_branch_element(pos,branch)
 	if pos == nil then
 		growing_trees_debug("error","Growing_Trees: growing_trees_get_next_new_branch_element trying to look for at nil pos")
 	end
-	
+
 	local neighbourpos = growing_trees_neighbour_positions(pos,ytoo)
 	for i,value in ipairs(neighbourpos) do
 		if not contains(branch,value) and
@@ -148,7 +148,7 @@ function growing_trees_get_next_new_branch_element(pos,branch)
 			return value
 		end
 	end
-	
+
 	growing_trees_debug("info","Growing_Trees: not found another branch element next to " ..printpos(pos))
 	return nil
 end
@@ -166,31 +166,31 @@ function growing_trees_get_tree_information(pos)
 	local distance = 0
 	local treesize = 0
 	local tree_root = nil
-	
+
 	local branch = {}
 	local current_pos = pos
 	local nextpos = current_pos
-	
+
 	local node_at_start = minetest.env:get_node(pos)
 	growing_trees_debug("verbose","Growing_Trees: fetching tree information starting at " .. printpos(pos) .. " -> " ..node_at_start.name)
-	
+
 	while nextpos ~= nil do
 		distance = distance +1
 		current_pos = nextpos
 		nextpos = growing_trees_get_next_new_branch_element(current_pos,branch)
 		table.insert(branch,nextpos)
 	end
-	
+
 	growing_trees_debug("verbose","Growing_Trees: looking for trunk next to " .. printpos(current_pos))
 	local pos_of_trunk = growing_trees_next_to(current_pos,trunk_static_type,false)
-	
+
 	if (pos_of_trunk ~= nil) then
 		growing_trees_debug("verbose","Growing_Trees: fetching trunk information next to " .. printpos(pos_of_trunk))
 		treesize,tree_root = growing_trees_get_tree_size(pos_of_trunk)
 	else
 		growing_trees_debug("error","Growing_Trees: trunk not found")
 	end
-	
+
 	return distance,treesize,tree_root
 end
 
@@ -207,11 +207,11 @@ function growing_trees_get_branch_growpos(pos)
 	--grow to preferred direction
 	if math.random() < 0.5 then
 		local origin = growing_trees_next_to(pos,branch_type,true)
-		
-		if origin == nil then 
+
+		if origin == nil then
 		    origin = growing_trees_next_to(pos,trunk_static_type,false)
 		end
-			
+
 		if origin ~= nil then
 		    growing_trees_debug("info","Growing_Trees: got origin for " .. printpos(pos) .. " at: " .. printpos(origin))
 			if origin.x ~= pos.x then
@@ -221,7 +221,7 @@ function growing_trees_get_branch_growpos(pos)
 					return {x=pos.x-1,y=pos.y,z=pos.z}
 				end
 			end
-			
+
 			if origin.z ~= pos.z then
 				if origin.z < pos.z then
 					return {x=pos.x,y=pos.y,z=pos.z+1}
@@ -253,11 +253,11 @@ function growing_trees_grow_leaves(pos)
 
 	for x = pos.x - 1, pos.x + 1 do
 	for y = pos.y - 1, pos.y + 1 do
-	for z = pos.z - 1, pos.z + 1 do	
+	for z = pos.z - 1, pos.z + 1 do
 		local currentpos = {x = x, y = y, z = z}
-		
+
 		local current_node = minetest.env:get_node(currentpos)
-		
+
 		if current_node ~= nil and
 			current_node.name == "air" then
 			if growing_trees_next_to(currentpos,branch_type,true) ~= nil or
@@ -271,29 +271,29 @@ function growing_trees_grow_leaves(pos)
 				end
 			end
 		end
-	
+
 	end
 	end
 	end
 
 	for x = pos.x - 2, pos.x + 2 do
 	for y = pos.y - 2, pos.y + 2 do
-	for z = pos.z - 2, pos.z + 2 do	
+	for z = pos.z - 2, pos.z + 2 do
 		local currentpos = {x = x, y = y, z = z}
-		
+
 		local distance = growing_trees_calc_distance(pos,currentpos)
-        
+
 	        if distance <= 2 then
 			if current_node ~= nil and
 				current_node.name == "air" then
-				
+
 				if growing_trees_next_to(currentpos,branch_type,true) ~= nil or
-					growing_trees_next_to(currentpos,leaves_type,true) ~= nil and 
+					growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
 					math.random() < 0.2 then
 					minetest.env:add_node(currentpos,{type="node",name="growing_trees:leaves"})
 				end
 			end
-		end	
+		end
 	end
 	end
 	end
@@ -310,19 +310,19 @@ end
 function growing_trees_grow_sprout_leaves(pos)
 	for x = pos.x - 1, pos.x + 1 do
 	for y = pos.y - 1, pos.y + 1 do
-	for z = pos.z - 1, pos.z + 1 do	
+	for z = pos.z - 1, pos.z + 1 do
 		local currentpos = {x = x, y = y, z = z}
-		
+
 		local distance = growing_trees_calc_distance(pos,currentpos)
-        
+
         if distance <= 1.5 then
 			local current_node = minetest.env:get_node(currentpos)
-			
+
 			if current_node ~= nil and
 				current_node.name == "air" then
-				
+
 				if growing_trees_next_to(currentpos,trunk_type,true) ~= nil or
-					growing_trees_next_to(currentpos,leaves_type,true) ~= nil and 
+					growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
 					math.random() < 0.3 then
 					minetest.env:add_node(currentpos,{type="node",name="growing_trees:leaves"})
 				end
@@ -331,29 +331,29 @@ function growing_trees_grow_sprout_leaves(pos)
 	end
 	end
 	end
-	
+
 	local treesize = growing_trees_get_tree_size({x=pos.x,y=pos.y-1,z=pos.z})
-	
+
 	if treesize > 2 and
 	   treesize < 6 then
-	   
+
 	    for x = pos.x - 3, pos.x + 3 do
 	    for y = pos.y - 3, pos.y + 3 do
-	    for z = pos.z - 3, pos.z + 3 do 
+	    for z = pos.z - 3, pos.z + 3 do
 	        local currentpos = {x = x, y = y, z = z}
 	        local current_node = minetest.env:get_node(currentpos)
-	        
+
 	        if current_node ~= nil and
                     current_node.name == "air" then
 	            local distance = growing_trees_calc_distance(pos,currentpos)
 	            if distance <= 3 then
 	                if growing_trees_next_to(currentpos,branch_type,true) ~= nil or
-	                    growing_trees_next_to(currentpos,leaves_type,true) ~= nil and 
+	                    growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
 	                    math.random() < 0.2 then
 	                    minetest.env:add_node(currentpos,{type="node",name="growing_trees:leaves"})
 	                end
 	            end
-	        end 
+	        end
 	    end
 	    end
 	    end
@@ -369,32 +369,32 @@ end
 -------------------------------------------------------------------------------
 function growing_trees_place_branch(pos)
     local branch_type = growing_trees_get_branch_type(pos)
-                
+
     if branch_type == "xx" then
         minetest.env:remove_node(pos)
         minetest.env:add_node(pos,{type=node,name="growing_trees:branch_xx"})
     end
-    
+
     if branch_type == "zz" then
         minetest.env:remove_node(pos)
         minetest.env:add_node(pos,{type=node,name="growing_trees:branch_zz"})
     end
-    
+
     if branch_type == "xpzp" then
         minetest.env:remove_node(pos)
         minetest.env:add_node(pos,{type=node,name="growing_trees:branch_xpzp"})
     end
-    
+
     if branch_type == "xpzm" then
         minetest.env:remove_node(pos)
         minetest.env:add_node(pos,{type=node,name="growing_trees:branch_xpzm"})
     end
-    
+
     if branch_type == "xmzp" then
         minetest.env:remove_node(pos)
         minetest.env:add_node(pos,{type=node,name="growing_trees:branch_xmzp"})
     end
-    
+
     if branch_type == "xmzm" then
         minetest.env:remove_node(pos)
         minetest.env:add_node(pos,{type=node,name="growing_trees:branch_xmzm"})
