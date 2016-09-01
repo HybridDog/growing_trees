@@ -52,6 +52,7 @@ end
 function growing_trees_get_tree_size(pos)
 
 	local node = minetest.env:get_node(pos)
+	local root = pos
 	
 	if (node.name ~= "growing_trees:trunk") then
 		return 0
@@ -75,6 +76,7 @@ function growing_trees_get_tree_size(pos)
 	runpos = growing_trees_get_trunk_below(pos) 
 	
 	if runpos ~= nil then
+	    root = runpos
 		runnode = minetest.env:get_node(runpos)
 	end
 	
@@ -84,11 +86,12 @@ function growing_trees_get_tree_size(pos)
 		runpos = growing_trees_get_trunk_below(runpos)
 		
 		if (runpos ~= nil) then
+		    root = runpos
 			runnode = minetest.env:get_node(runpos)
 		end
 	end
 	
-	return size
+	return size,root
 end
 
 

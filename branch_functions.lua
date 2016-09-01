@@ -48,7 +48,7 @@ function growing_trees_next_to_branch(pos,origin)
 		--print("ntb -> x+ ".. printpos(xplus_pos) .. ": "..node_xplus.name)
 		
 		if node_xplus.name == "growing_trees:branch_sprout" or
-			node_xplus.name == "growing_trees:branch" then
+			growing_trees_is_branch_structure(node_xplus.name) then
 			return true
 		end
 	end
@@ -60,7 +60,7 @@ function growing_trees_next_to_branch(pos,origin)
 		--print("ntb -> x- ".. printpos(xminus_pos) .. ": "..node_xminus.name)
 		
 		if node_xminus.name == "growing_trees:branch_sprout" or
-			node_xminus.name == "growing_trees:branch" then
+			growing_trees_is_branch_structure(node_xminus.name) then
 			return true
 		end
 	end
@@ -72,7 +72,7 @@ function growing_trees_next_to_branch(pos,origin)
 		--print("ntb -> z+".. printpos(zplus_pos) .. ": "..node_zplus.name)
 		
 		if node_zplus.name == "growing_trees:branch_sprout" or
-			node_zplus.name == "growing_trees:branch" then
+			growing_trees_is_branch_structure(node_zplus.name) then
 			return true
 		end
 	end
@@ -84,7 +84,7 @@ function growing_trees_next_to_branch(pos,origin)
 		--print("ntb -> z-".. printpos(zminus_pos) .. ": "..node_zminus.name)
 		
 		if node_zminus.name == "growing_trees:branch_sprout" or
-			node_zminus.name == "growing_trees:branch" then
+			growing_trees_is_branch_structure(node_zminus.name) then
 			return true
 		end
 	end
@@ -96,7 +96,7 @@ function growing_trees_next_to_branch(pos,origin)
 		--print("ntb -> y+".. printpos(yplus_pos) .. ": "..node_yplus.name)
 		
 		if node_yplus.name == "growing_trees:branch_sprout" or
-			node_yplus.name == "growing_trees:branch" then
+			growing_trees_is_branch_structure(node_yplus.name) then
 			return true
 		end
 	end
@@ -108,7 +108,7 @@ function growing_trees_next_to_branch(pos,origin)
 		--print("ntb -> y-".. printpos(yminus_pos) .. ": "..node_yminus.name)
 		
 		if node_yminus.name == "growing_trees:branch_sprout" or
-			node_yminus.name == "growing_trees:branch" then
+			growing_trees_is_branch_structure(node_yminus.name) then
 			return true
 		end
 	end
@@ -129,7 +129,7 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 	local node_xplus = minetest.env:get_node(xplus_pos)
 	
 	--print("x+: " ..node_xplus.name)
-	if node_xplus.name == tolookfor then
+	if contains_name(tolookfor,node_xplus.name)  then
 		return xplus_pos
 	end
 
@@ -138,7 +138,7 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 	local node_xminus = minetest.env:get_node(xminus_pos)
 	
 	--print("x-: " ..node_xminus.name)
-	if node_xminus.name == tolookfor then
+	if contains_name(tolookfor,node_xminus.name) then
 		return xminus_pos
 	end
 	
@@ -147,7 +147,7 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 	local node_zplus = minetest.env:get_node(zplus_pos)
 		
 	--print("z+: " ..node_zplus.name)
-	if node_zplus.name == tolookfor then
+	if contains_name(tolookfor,node_zplus.name) then
 		return zplus_pos
 	end
 	
@@ -156,7 +156,7 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 	local node_zminus = minetest.env:get_node(zminus_pos)
 	
 	--print("z-: " ..node_zminus.name)
-	if node_zminus.name == tolookfor then
+	if contains_name(tolookfor,node_zminus.name) then
 		return zminus_pos
 	end
 	
@@ -165,7 +165,7 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 		local node_yplus = minetest.env:get_node(yplus_pos)
 			
 		--print("y+: " ..node_yplus.name)
-		if node_zplus.name == tolookfor then
+		if contains_name(tolookfor,node_yplus.name) then
 			return zplus_pos
 		end
 		
@@ -174,15 +174,25 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 		local node_yminus = minetest.env:get_node(yminus_pos)
 		
 		--print("y-: " ..node_yminus.name)
-		if node_yminus.name == tolookfor then
+		if contains_name(tolookfor,node_yminus.name) then
 			return yminus_pos
 		end
 	
 	end
 	
+	growing_trees_debug("info","Growing_Trees: not found any of " .. dump(tolookfor) .. " next to " ..printpos(pos))
 	return nil
 end
 
+-------------------------------------------------------------------------------
+-- name: growing_get_branch_next_to(pos,branch)
+--
+-- @brief get next branch element
+--
+-- @param position pos to check
+-- @param branch table containing known branch positions
+-- @return position of next branch element
+-------------------------------------------------------------------------------
 function growing_get_branch_next_to(pos,branch)
 	for x = pos.x - 1, pos.x + 1 do
 	for y = pos.y - 1, pos.y + 1 do
@@ -199,7 +209,7 @@ function growing_get_branch_next_to(pos,branch)
 				if (n ~= nil) then
 					--print(printpos(currentpos).. "->" .. n.name)
 					if (n.name ~= 'ignore')
-						and ("growing_trees:branch" == n.name) then
+						and growing_trees_is_branch_structure(n.name) then
 						--print("Found branch at: " .. printpos(currentpos));
 						return currentpos
 					end
@@ -239,16 +249,23 @@ function growing_trees_get_distance_from_trunk(pos,branch)
 	local treesize = 0
 	
 	if (pos_of_trunk ~= nil) then
-		treesize = growing_trees_get_tree_size(pos_of_trunk)
+		treesize,tree_root = growing_trees_get_tree_size(pos_of_trunk)
 	else
 		print("ERROR trunk not found")
 	end
 	
-	return distance,treesize
+	return distance,treesize,tree_root
 
 end
 
-
+-------------------------------------------------------------------------------
+-- name: growing_trees_get_brach_growpos(pos)
+--
+-- @brief get a new branchpos next to current sprout
+--
+-- @param pos start searching around pos
+-- @return pos to grow to
+-------------------------------------------------------------------------------
 function growing_trees_get_brach_growpos(pos)
 
 	--grow to preferred direction
@@ -261,7 +278,8 @@ function growing_trees_get_brach_growpos(pos)
 			origin = growing_get_trunk_next_to(pos)
 		end
 			
-		if origin ~= nil then	
+		if origin ~= nil then
+		    growing_trees_debug("info","Growing_Trees: got origin for " .. printpos(pos) .. " at: " .. printpos(origin))
 			if origin.x ~= pos.x then
 				if origin.x < pos.x then
 					return {x=pos.x+1,y=pos.y,z=pos.z}
@@ -278,9 +296,12 @@ function growing_trees_get_brach_growpos(pos)
 				end
 			end
 		else
+		    --if origin couln't be found grow to random direction
+		    growing_trees_debug("error","Growing_Trees: unable to find origin for branch at: " .. printpos(pos))
 			return growing_trees_get_random_next_to(pos)
 		end
 	else
+	    --grow to random direction
 		return growing_trees_get_random_next_to(pos)
 	end
 
@@ -299,7 +320,7 @@ function growing_trees_grow_leaves(pos)
 		if current_node ~= nil and
 			current_node.name == "air" then
 			
-			if growing_trees_next_to(currentpos,"growing_trees:branch",true) ~= nil or
+			if growing_trees_next_to(currentpos,branch_nodes,true) ~= nil or
 				growing_trees_next_to(currentpos,"growing_trees:leaves",true) ~= nil and 
 				math.random() < 0.3 then					
 				minetest.env:add_node(currentpos,{type="node",name="growing_trees:leaves"})
@@ -318,7 +339,7 @@ function growing_trees_grow_leaves(pos)
 		if current_node ~= nil and
 			current_node.name == "air" then
 			
-			if growing_trees_next_to(currentpos,"growing_trees:branch",true) ~= nil or
+			if growing_trees_next_to(currentpos,branch_nodes,true) ~= nil or
 				growing_trees_next_to(currentpos,"growing_trees:leaves",true) ~= nil and 
 				math.random() < 0.2 then					
 				minetest.env:add_node(currentpos,{type="node",name="growing_trees:leaves"})
