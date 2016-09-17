@@ -77,10 +77,6 @@ end
 function growing_trees_is_tree_structure(pos)
 	local node = minetest.get_node(pos)
 
-	if node == nil then
-		return false
-	end
-
 	if  growing_trees_node_is_type(trunk_type ,node.name) or
 		growing_trees_node_is_type(branch_type ,node.name) then
 		return true
@@ -102,17 +98,11 @@ end
 --! @return y value of surface or nil
 -------------------------------------------------------------------------------
 function growing_trees_get_surface(x,z, min_y, max_y)
-
     for runy = min_y, max_y do
-        local pos = { x=x,y=runy, z=z }
-        local node_to_check = minetest.get_node(pos)
-
-        if node_to_check.name == "default:dirt_with_grass" then
-            return pos.y
+        if minetest.get_node{x=x, y=runy, z=z}.name == "default:dirt_with_grass" then
+            return runy
         end
     end
-
-    return nil
 end
 
 -------------------------------------------------------------------------------
@@ -125,32 +115,16 @@ end
 --! @return table of positions
 -------------------------------------------------------------------------------
 function growing_trees_neighbour_positions(pos,ynodes_too)
-	local retval = {}
-
-	table.insert(retval, {x=pos.x-1,y=pos.y,z=pos.z})
-	table.insert(retval, {x=pos.x+1,y=pos.y,z=pos.z})
-	table.insert(retval, {x=pos.x,y=pos.y,z=pos.z+1})
-	table.insert(retval, {x=pos.x,y=pos.y,z=pos.z-1})
-
+	local retval = {
+		{x=pos.x-1,y=pos.y,z=pos.z},
+		{x=pos.x+1,y=pos.y,z=pos.z},
+		{x=pos.x,y=pos.y,z=pos.z+1},
+		{x=pos.x,y=pos.y,z=pos.z-1}
+	}
 	if ynodes_too then
-		table.insert(retval, {x=pos.x,y=pos.y+1,z=pos.z})
-		table.insert(retval, {x=pos.x,y=pos.y-1,z=pos.z})
+		retval[5] = {x=pos.x,y=pos.y+1,z=pos.z}
+		retval[6] = {x=pos.x,y=pos.y-1,z=pos.z}
 	end
 
 	return retval
-end
-
--------------------------------------------------------------------------------
--- name: growing_trees_calc_distance(pos1,pos2)
---
---! @brief calculate 3d distance between to points
---
---! @param pos1 first position
---! @param pos2 second position
---! @retval scalar value, distance
--------------------------------------------------------------------------------
-function growing_trees_calc_distance(pos1,pos2)
-    return math.sqrt(   math.pow(pos1.x-pos2.x,2) +
-                math.pow(pos1.y-pos2.y,2) +
-                math.pow(pos1.z-pos2.z,2))
 end

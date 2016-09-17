@@ -281,7 +281,7 @@ function growing_trees_grow_leaves(pos)
 	for z = pos.z - 2, pos.z + 2 do
 		local currentpos = {x = x, y = y, z = z}
 
-		local distance = growing_trees_calc_distance(pos,currentpos)
+		local distance = vector.distance(pos,currentpos)
 
 	        if distance <= 2 then
 			if current_node ~= nil and
@@ -313,7 +313,7 @@ function growing_trees_grow_sprout_leaves(pos)
 	for z = pos.z - 1, pos.z + 1 do
 		local currentpos = {x = x, y = y, z = z}
 
-		local distance = growing_trees_calc_distance(pos,currentpos)
+		local distance = vector.distance(pos,currentpos)
 
         if distance <= 1.5 then
 			local current_node = minetest.get_node(currentpos)
@@ -345,7 +345,7 @@ function growing_trees_grow_sprout_leaves(pos)
 
 	        if current_node ~= nil and
                     current_node.name == "air" then
-	            local distance = growing_trees_calc_distance(pos,currentpos)
+	            local distance = vector.distance(pos,currentpos)
 	            if distance <= 3 then
 	                if growing_trees_next_to(currentpos,branch_type,true) ~= nil or
 	                    growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
