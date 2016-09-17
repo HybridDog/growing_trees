@@ -49,7 +49,7 @@ minetest.register_abm({
 			--print("Treesize: " .. treesize)
 			if (treesize > MAX_TREE_SIZE) then
 				minetest.remove_node(pos)
-				minetest.add_node(pos,{type=node,name="growing_trees:trunk_top"})
+				minetest.add_node(pos, {name="growing_trees:trunk_top"})
 				growing_trees_debug("info","Growing_Trees: maximum tree size reached")
 				return
 			end
@@ -73,8 +73,8 @@ minetest.register_abm({
 					table.contains(leaves_type,node_above.name) then
 
 					minetest.remove_node(pos)
-					minetest.add_node(pos,{type=node,name="growing_trees:trunk"})
-					minetest.add_node(pos_above,{type=node,name="growing_trees:trunk_sprout"})
+					minetest.add_node(pos, {name="growing_trees:trunk"})
+					minetest.add_node(pos_above, {name="growing_trees:trunk_sprout"})
 
 					grown = true
 				end
@@ -92,9 +92,9 @@ minetest.register_abm({
 						table.contains(leaves_type,node_at_pos_to_grow.name) then
 
 						minetest.remove_node(pos)
-						minetest.add_node(pos,{type=node,name="growing_trees:trunk"})
+						minetest.add_node(pos, {name="growing_trees:trunk"})
 
-						minetest.add_node(pos_to_grow_to,{type=node,name="growing_trees:trunk_sprout"})
+						minetest.add_node(pos_to_grow_to, {name="growing_trees:trunk_sprout"})
 
 						grown = true
 					end
@@ -142,7 +142,7 @@ minetest.register_abm({
 					if distance > 2 and
 						 next_to_branch == false then
 						minetest.remove_node(growpos)
-						minetest.add_node(growpos,{type=node,name="growing_trees:branch_sprout"})
+						minetest.add_node(growpos, {name="growing_trees:branch_sprout"})
 					else
 						growing_trees_debug("verbose","Growing_Trees: NOT adding branch: " .. distance ..  " ntb: " .. dump(next_to_branch) )
 					end
@@ -209,7 +209,7 @@ minetest.register_abm({
 					if math.random() < 0.1 then
 						growing_trees_debug("info","Growing_Trees: aborting branch growth")
 						minetest.remove_node(pos)
-						minetest.add_node(pos,{type=node,name="growing_trees:leaves"})
+						minetest.add_node(pos, {name="growing_trees:leaves"})
 						return
 					end
 				end
@@ -221,7 +221,7 @@ minetest.register_abm({
 					growing_trees_debug("info","Growing_Trees: growing branch to " .. printpos(growpos))
 
 					minetest.remove_node(growpos)
-					minetest.add_node(growpos,{type=node,name="growing_trees:branch_sprout"})
+					minetest.add_node(growpos, {name="growing_trees:branch_sprout"})
 
 					growing_trees_place_branch(pos)
 				end

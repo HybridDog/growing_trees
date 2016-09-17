@@ -13,44 +13,44 @@
 -------------------------------------------------------------------------------
 
 branch_type = {
-			"growing_trees:branch",
-			"growing_trees:branch_ukn",
-			"growing_trees:branch_zz",
-			"growing_trees:branch_xx",
-			"growing_trees:branch_xpzp",
-			"growing_trees:branch_xpzm",
-			"growing_trees:branch_xmzp",
-			"growing_trees:branch_xmzm",
-			"growing_trees:branch_sprout",
-			}
+	"growing_trees:branch",
+	"growing_trees:branch_ukn",
+	"growing_trees:branch_zz",
+	"growing_trees:branch_xx",
+	"growing_trees:branch_xpzp",
+	"growing_trees:branch_xpzm",
+	"growing_trees:branch_xmzp",
+	"growing_trees:branch_xmzm",
+	"growing_trees:branch_sprout",
+}
 
 branch_static_type = {
-			"growing_trees:branch",
-			"growing_trees:branch_ukn",
-			"growing_trees:branch_zz",
-			"growing_trees:branch_xx",
-			"growing_trees:branch_xpzp",
-			"growing_trees:branch_xpzm",
-			"growing_trees:branch_xmzp",
-			"growing_trees:branch_xmzm",
+	"growing_trees:branch",
+	"growing_trees:branch_ukn",
+	"growing_trees:branch_zz",
+	"growing_trees:branch_xx",
+	"growing_trees:branch_xpzp",
+	"growing_trees:branch_xpzm",
+	"growing_trees:branch_xmzp",
+	"growing_trees:branch_xmzm",
 }
 
 trunk_type = {
-			"growing_trees:trunk_top",
-			"growing_trees:trunk",
-			"growing_trees:medium_trunk",
-			"growing_trees:big_trunk",
-			"growing_trees:trunk_sprout"
+	"growing_trees:trunk_top",
+	"growing_trees:trunk",
+	"growing_trees:medium_trunk",
+	"growing_trees:big_trunk",
+	"growing_trees:trunk_sprout"
 }
 
 trunk_static_type = {
-			"growing_trees:trunk",
-			"growing_trees:medium_trunk",
-			"growing_trees:big_trunk",
+	"growing_trees:trunk",
+	"growing_trees:medium_trunk",
+	"growing_trees:big_trunk",
 }
 
 leaves_type = {
-			"growing_trees:leaves"
+	"growing_trees:leaves"
 }
 
 -------------------------------------------------------------------------------
