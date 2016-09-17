@@ -11,14 +11,12 @@ function growing_trees_get_trunk_below(pos)
 
 	for x = pos.x - 1, pos.x + 1 do
 		for z = pos.z - 1, pos.z + 1 do
-            local runpos = {x = x, y = pos.y-1, z = z}
-            if growing_trees_pos_is_type(trunk_static_type,runpos) then
-                return runpos
-            end
+			local runpos = {x = x, y = pos.y-1, z = z}
+			if growing_trees_pos_is_type(trunk_static_type,runpos) then
+				return runpos
+			end
 		end
 	end
-
-	return nil
 end
 
 
@@ -34,14 +32,12 @@ function growing_trees_get_trunk_above(pos)
 
 	for x = pos.x - 1, pos.x + 1 do
 		for z = pos.z - 1, pos.z + 1 do
-		    local runpos = {x = x, y = pos.y+1, z = z}
+			local runpos = {x = x, y = pos.y+1, z = z}
 			if growing_trees_pos_is_type(trunk_static_type,runpos) then
 				return runpos
 			end
 		end
 	end
-
-	return nil
 end
 
 --calculate size of trunk pos is element of in blocks
@@ -68,7 +64,7 @@ function growing_trees_get_tree_size(pos)
 	runpos = growing_trees_get_trunk_below(pos)
 
 	if runpos ~= nil then
-	    root = runpos
+		root = runpos
 	end
 
 	while runpos ~= nil and
@@ -78,7 +74,7 @@ function growing_trees_get_tree_size(pos)
 		runpos = growing_trees_get_trunk_below(runpos)
 
 		if (runpos ~= nil) then
-		    root = runpos
+			root = runpos
 		end
 	end
 
@@ -117,46 +113,46 @@ end
 --! @param height heigth to replace
 -------------------------------------------------------------------------------
 function growing_trees_make_trunk_big(root,height)
-    growing_trees_debug("error","Growing_Trees: replacing small trunk at: " .. printpos(root))
-    local ymax = root.y+height
+	growing_trees_debug("error","Growing_Trees: replacing small trunk at: " .. printpos(root))
+	local ymax = root.y+height
 
-    local runy = root.y
-    local current_pos = root
+	local runy = root.y
+	local current_pos = root
 
-    while runy <  (ymax - (height/2)) and
-        current_pos ~= nil do
-        minetest.remove_node(current_pos)
-        minetest.add_node(current_pos,{type=node,name="growing_trees:big_trunk"})
+	while runy <  (ymax - (height/2)) and
+		current_pos ~= nil do
+		minetest.remove_node(current_pos)
+		minetest.add_node(current_pos,{type=node,name="growing_trees:big_trunk"})
 
-        local neighbour = growing_trees_next_to(current_pos, { "growing_trees:trunk" },false)
+		local neighbour = growing_trees_next_to(current_pos, { "growing_trees:trunk" },false)
 
-        if neighbour ~= nil then
-            minetest.remove_node(neighbour)
-            minetest.add_node(neighbour,{type=node,name="growing_trees:big_trunk"})
-            current_pos = neighbour
-        end
+		if neighbour ~= nil then
+			minetest.remove_node(neighbour)
+			minetest.add_node(neighbour,{type=node,name="growing_trees:big_trunk"})
+			current_pos = neighbour
+		end
 
-        current_pos = growing_trees_get_trunk_above(current_pos)
+		current_pos = growing_trees_get_trunk_above(current_pos)
 
-        runy = runy + 1
-    end
+		runy = runy + 1
+	end
 
-    while runy <  ymax and
-        current_pos ~= nil do
-        minetest.remove_node(current_pos)
-        minetest.add_node(current_pos,{type=node,name="growing_trees:medium_trunk"})
+	while runy <  ymax and
+		current_pos ~= nil do
+		minetest.remove_node(current_pos)
+		minetest.add_node(current_pos,{type=node,name="growing_trees:medium_trunk"})
 
-        local neighbour = growing_trees_next_to(current_pos, { "growing_trees:trunk" },false)
+		local neighbour = growing_trees_next_to(current_pos, { "growing_trees:trunk" },false)
 
-        if neighbour ~= nil then
-            minetest.remove_node(neighbour)
-            minetest.add_node(neighbour,{type=node,name="growing_trees:medium_trunk"})
-            current_pos = neighbour
-        end
+		if neighbour ~= nil then
+			minetest.remove_node(neighbour)
+			minetest.add_node(neighbour,{type=node,name="growing_trees:medium_trunk"})
+			current_pos = neighbour
+		end
 
-        current_pos = growing_trees_get_trunk_above(current_pos)
+		current_pos = growing_trees_get_trunk_above(current_pos)
 
-        runy = runy + 1
-    end
+		runy = runy + 1
+	end
 
 end
