@@ -71,7 +71,7 @@ function growing_trees_next_to_branch(pos,origin)
 	local node_at_pos = minetest.get_node(pos)
 	growing_trees_debug("verbose","Growing_Trees: looking for branch next to  " .. dump(pos) .. " type is " .. dump(node_at_pos.name))
 
-	if origin ~= nil then
+	if origin then
 		local node_origin = minetest.get_node(origin)
 		growing_trees_debug("verbose","Growing_Trees: found branch origin at  " .. dump(origin) .. " type is " .. dump(node_origin.name))
 	end
@@ -79,13 +79,12 @@ function growing_trees_next_to_branch(pos,origin)
 	local neighbourpos = growing_trees_neighbour_positions(pos,true)
 
 	for i,value in ipairs(neighbourpos) do
-		if (growing_trees_pos_is_type(branch_type,value)) and
-			not issamepos(value,origin) then
+		local node = minetest.get_node(value)
+		if table.contains(branch_type, node.name)
+		and not issamepos(value, origin) then
 			return true
-		else
-			local node = minetest.get_node(value)
-			growing_trees_debug("verbose","Growing_Trees: node at  " .. printpos(value) .. " of type " .. node.name .. " didn't match")
 		end
+		growing_trees_debug("verbose","Growing_Trees: node at  " .. printpos(value) .. " of type " .. node.name .. " didn't match")
 	end
 
 	growing_trees_debug("info","Growing_Trees: not found another branch next to  " .. printpos(pos))
@@ -113,12 +112,11 @@ function growing_trees_next_to(pos,tolookfor,ytoo)
 	local neighbourpos = growing_trees_neighbour_positions(pos,ytoo)
 
 	for i,value in ipairs(neighbourpos) do
-		if (growing_trees_pos_is_type(tolookfor,value)) then
+		local node = minetest.get_node(value)
+		if table.contains(tolookfor, node.name) then
 			return value
-		else
-			local node = minetest.get_node(value)
-			growing_trees_debug("verbose","Growing_Trees: node at  " .. printpos(value) .. " of type " .. node.name .. " didn't match")
 		end
+		growing_trees_debug("verbose","Growing_Trees: node at  " .. printpos(value) .. " of type " .. node.name .. " didn't match")
 	end
 
 	growing_trees_debug("info","Growing_Trees: not found any of " .. dump(tolookfor) .. " next to " ..printpos(pos))
@@ -142,8 +140,8 @@ function growing_trees_get_next_new_branch_element(pos,branch)
 
 	local neighbourpos = growing_trees_neighbour_positions(pos,ytoo)
 	for i,value in ipairs(neighbourpos) do
-		if not contains(branch,value) and
-			growing_trees_pos_is_type(branch_static_type,value) then
+		if not contains(branch, value)
+		and table.contains(branch_static_type, minetest.get_node(value).name) then
 			growing_trees_debug("verbose","Growing_Trees: found branch element at " .. printpos(value) .. " next to " ..printpos(pos))
 			return value
 		end

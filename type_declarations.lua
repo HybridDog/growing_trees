@@ -70,16 +70,3 @@ table.contains = table.contains or function(type_declaration, name)
 	end
 	return false
 end
-
--------------------------------------------------------------------------------
--- name: growing_trees_pos_is_type(table_to_check,pos)
---
--- @brief check if a table contains a specific element
---
--- @param table_to_check table or string to search in
--- @param name name to search
--- @return true/false
--------------------------------------------------------------------------------
-function growing_trees_pos_is_type(type_declaration,pos)
-	return table.contains(type_declaration, minetest.get_node(pos).name)
-end

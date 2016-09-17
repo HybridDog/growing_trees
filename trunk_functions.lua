@@ -2,14 +2,16 @@
 --find a trunk node exactly one level below current position
 --with a distance of at most 1
 function growing_trees_get_trunk_below(pos)
-	if table.contains(trunk_static_type, minetest.get_node{x=pos.x,y=pos.y-1,z=pos.z}.name) then
-		return pos_below
+	local p = {x=pos.x, y=pos.y-1, z=pos.z}
+	if table.contains(trunk_static_type, minetest.get_node(p).name) then
+		return p
 	end
 
 	for x = pos.x - 1, pos.x + 1 do
 		for z = pos.z - 1, pos.z + 1 do
-			if table.contains(trunk_static_type, minetest.get_node{x = x, y = pos.y-1, z = z}.name) then
-				return runpos
+			local p = {x=x, y = pos.y-1, z=z}
+			if table.contains(trunk_static_type, minetest.get_node(p).name) then
+				return p
 			end
 		end
 	end
@@ -19,18 +21,16 @@ end
 --find a trunk node exactly above pos with
 --distance at most one
 function growing_trees_get_trunk_above(pos)
-
-	local pos_above = {x=pos.x,y=pos.y+1,z=pos.z}
-
-	if growing_trees_pos_is_type(trunk_static_type,pos_above) then
-		return pos_above
+	local p = {x=pos.x, y=pos.y+1, z=pos.z}
+	if table.contains(trunk_static_type, minetest.get_node(p).name) then
+		return p
 	end
 
 	for x = pos.x - 1, pos.x + 1 do
 		for z = pos.z - 1, pos.z + 1 do
-			local runpos = {x = x, y = pos.y+1, z = z}
-			if growing_trees_pos_is_type(trunk_static_type,runpos) then
-				return runpos
+			local p = {x=x, y = pos.y+1, z=z}
+			if table.contains(trunk_static_type, minetest.get_node(p).name) then
+				return p
 			end
 		end
 	end
@@ -38,11 +38,10 @@ end
 
 --calculate size of trunk pos is element of in blocks
 function growing_trees_get_tree_size(pos)
-
 	local node = minetest.get_node(pos)
 	local root = pos
 
-	if not growing_trees_pos_is_type(trunk_static_type,pos) then
+	if not table.contains(trunk_static_type, node.name) then
 		return 0
 	end
 
@@ -50,28 +49,24 @@ function growing_trees_get_tree_size(pos)
 
 	local runpos = pos;
 
-	while runpos ~= nil and
-	   growing_trees_pos_is_type(trunk_static_type,runpos) do
-		size = size+1;
+	while runpos
+	and table.contains(trunk_static_type, minetest.get_node(runpos).name) do
+		size = size+1
 
 		runpos = growing_trees_get_trunk_above(runpos)
 	end
 
 	runpos = growing_trees_get_trunk_below(pos)
 
-	if runpos ~= nil then
-		root = runpos
-	end
+	root = runpos or root
 
-	while runpos ~= nil and
-	   growing_trees_pos_is_type(trunk_static_type,runpos) do
+	while runpos
+	and table.contains(trunk_static_type, minetest.get_node(runpos).name) do
 		size = size+1;
 
 		runpos = growing_trees_get_trunk_below(runpos)
 
-		if (runpos ~= nil) then
-			root = runpos
-		end
+		root = runpos or root
 	end
 
 	return size,root
