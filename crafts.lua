@@ -27,8 +27,8 @@ function growing_trees_place_sprout(pos)
         if bottom_node.name == "default:dirt" or
              bottom_node.name == "default:dirt_with_grass" then
 
-            minetest.add_node(pos,{type=node,name="growing_trees:trunk"})
-            minetest.add_node(pos_above,{type=node,name="growing_trees:trunk_sprout"})
+            minetest.add_node(pos, {name="growing_trees:trunk"})
+            minetest.add_node(pos_above, {name="growing_trees:trunk_sprout"})
             growing_trees_grow_sprout_leaves(pos_above)
             return true
         end
@@ -38,19 +38,17 @@ end
 
 
 minetest.register_craftitem("growing_trees:sapling", {
-        description = "Sapling (growing tree mod)",
-        image = "default_sapling.png",
-        on_place = function(item,place,pointed_thing)
-            if pointed_thing.type == "node" then
-                local pos = pointed_thing.above
-                if growing_trees_place_sprout(pos) then
-                    item:take_item(1)
-                end
-            end
-
-            return item
-        end
-    })
+	description = "Sapling (growing tree mod)",
+	image = "default_sapling.png",
+	on_place = function(item, _, pt)
+		if pt.type ~= "node"
+		or not growing_trees_place_sprout(pt.above) then
+			return
+		end
+		item:take_item(1)
+		return item
+	end
+})
 
 
 minetest.register_craft({
