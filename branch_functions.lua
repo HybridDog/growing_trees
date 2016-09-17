@@ -30,7 +30,7 @@ function growing_trees_min_distance(pos)
 
 	while runnode ~= nil and (
 		   runnode.name == "air" or
-		   growing_trees_node_is_type(leaves_type,runnode.name)) do
+		   table.contains(leaves_type,runnode.name)) do
 		distance_down = distance_down +1
 		runpos = {x=runpos.x,y=runpos.y-1,z=runpos.z}
 		runnode = minetest.get_node(runpos)
@@ -44,7 +44,7 @@ function growing_trees_min_distance(pos)
 
 	while runnode ~= nil and (
 		   runnode.name == "air" or
-		   growing_trees_node_is_type(leaves_type,runnode.name)) do
+		   table.contains(leaves_type,runnode.name)) do
 		distance_up = distance_up +1
 		runpos = {x=runpos.x,y=runpos.y+1,z=runpos.z}
 		runnode = minetest.get_node(runpos)

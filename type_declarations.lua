@@ -54,7 +54,7 @@ leaves_type = {
 }
 
 -------------------------------------------------------------------------------
--- name: growing_trees_node_is_type(table_to_check,name)
+-- name: table.contains(table_to_check,name)
 --
 -- @brief check if a table contains a specific element
 --
@@ -62,19 +62,17 @@ leaves_type = {
 -- @param name name to search
 -- @return true/false
 -------------------------------------------------------------------------------
-function growing_trees_node_is_type(type_declaration,name)
-	if type(type_declaration) == "table" then
-		for i,v in ipairs(type_declaration) do
-			if v == name then
-				return true
-			end
+table.contains = table.contains or function(type_declaration, name)
+	for i = 1,#type_declaration do
+		if type_declaration[i] == name then
+			return true
 		end
 	end
 	return false
 end
 
 -------------------------------------------------------------------------------
--- name: growing_trees_pos_is_type(table_to_check,name)
+-- name: growing_trees_pos_is_type(table_to_check,pos)
 --
 -- @brief check if a table contains a specific element
 --
@@ -83,17 +81,5 @@ end
 -- @return true/false
 -------------------------------------------------------------------------------
 function growing_trees_pos_is_type(type_declaration,pos)
-	local node = minetest.get_node(pos)
-
-	if node ~= nil then
-		if type(type_declaration) == "table" then
-			for i,v in ipairs(type_declaration) do
-
-				if v == node.name then
-					return true
-				end
-			end
-		end
-	end
-	return false
+	return table.contains(type_declaration, minetest.get_node(pos).name)
 end

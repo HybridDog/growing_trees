@@ -75,14 +75,9 @@ end
 -------------------------------------------------------------------------------
 --
 function growing_trees_is_tree_structure(pos)
-	local node = minetest.get_node(pos)
-
-	if  growing_trees_node_is_type(trunk_type ,node.name) or
-		growing_trees_node_is_type(branch_type ,node.name) then
-		return true
-	end
-
-	return false
+	local nodename = minetest.get_node(pos).name
+	return table.contains(trunk_type, nodename)
+		or table.contains(branch_type, nodename)
 end
 
 

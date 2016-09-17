@@ -70,7 +70,7 @@ minetest.register_abm({
 				local node_above = minetest.get_node(pos_above)
 
 				if node_above.name == "air" or
-					growing_trees_node_is_type(leaves_type,node_above.name) then
+					table.contains(leaves_type,node_above.name) then
 
 					minetest.remove_node(pos)
 					minetest.add_node(pos,{type=node,name="growing_trees:trunk"})
@@ -89,7 +89,7 @@ minetest.register_abm({
 
 					--check if pos is feasable
 					if node_at_pos_to_grow.name == "air" or
-						growing_trees_node_is_type(leaves_type,node_at_pos_to_grow.name) then
+						table.contains(leaves_type,node_at_pos_to_grow.name) then
 
 						minetest.remove_node(pos)
 						minetest.add_node(pos,{type=node,name="growing_trees:trunk"})
@@ -133,7 +133,7 @@ minetest.register_abm({
 
 				if growing_trees_is_tree_structure(growpos) == false and
 					( node_at_pos.name == "air" or
-					  growing_trees_node_is_type(leaves_type,node_at_pos.name)) then
+					  table.contains(leaves_type,node_at_pos.name)) then
 
 					local distance	   = growing_trees_min_distance(growpos)
 					local next_to_branch = growing_trees_next_to_branch(growpos,nil)
@@ -181,7 +181,7 @@ minetest.register_abm({
 			if  tree_structure == false and
 				next_to_branch == false and
 				( node_at_pos.name == "air" or
-				  growing_trees_node_is_type(leaves_type,node_at_pos.name)) then
+				  table.contains(leaves_type,node_at_pos.name)) then
 				growing_trees_debug("verbose","valid growing pos found:" .. printpos(growpos) .. " -> " .. node_at_pos.name )
 
 				local branch = {}

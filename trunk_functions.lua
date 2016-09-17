@@ -2,17 +2,13 @@
 --find a trunk node exactly one level below current position
 --with a distance of at most 1
 function growing_trees_get_trunk_below(pos)
-
-	local pos_below = {x=pos.x,y=pos.y-1,z=pos.z}
-
-	if growing_trees_pos_is_type(trunk_static_type,pos_below) then
+	if table.contains(trunk_static_type, minetest.get_node{x=pos.x,y=pos.y-1,z=pos.z}.name) then
 		return pos_below
 	end
 
 	for x = pos.x - 1, pos.x + 1 do
 		for z = pos.z - 1, pos.z + 1 do
-			local runpos = {x = x, y = pos.y-1, z = z}
-			if growing_trees_pos_is_type(trunk_static_type,runpos) then
+			if table.contains(trunk_static_type, minetest.get_node{x = x, y = pos.y-1, z = z}.name) then
 				return runpos
 			end
 		end
