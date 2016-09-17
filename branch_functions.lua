@@ -368,35 +368,5 @@ end
 --! @param pos to place branch
 -------------------------------------------------------------------------------
 function growing_trees_place_branch(pos)
-	local branch_type = growing_trees_get_branch_type(pos)
-
-	if branch_type == "xx" then
-		minetest.remove_node(pos)
-		minetest.add_node(pos,{type=node,name="growing_trees:branch_xx"})
-	end
-
-	if branch_type == "zz" then
-		minetest.remove_node(pos)
-		minetest.add_node(pos,{type=node,name="growing_trees:branch_zz"})
-	end
-
-	if branch_type == "xpzp" then
-		minetest.remove_node(pos)
-		minetest.add_node(pos,{type=node,name="growing_trees:branch_xpzp"})
-	end
-
-	if branch_type == "xpzm" then
-		minetest.remove_node(pos)
-		minetest.add_node(pos,{type=node,name="growing_trees:branch_xpzm"})
-	end
-
-	if branch_type == "xmzp" then
-		minetest.remove_node(pos)
-		minetest.add_node(pos,{type=node,name="growing_trees:branch_xmzp"})
-	end
-
-	if branch_type == "xmzm" then
-		minetest.remove_node(pos)
-		minetest.add_node(pos,{type=node,name="growing_trees:branch_xmzm"})
-	end
+	minetest.set_node(pos, {name="growing_trees:branch_"..growing_trees_get_branch_type(pos)})
 end
