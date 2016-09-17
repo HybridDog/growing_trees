@@ -265,9 +265,9 @@ function growing_trees_grow_leaves(pos)
 				math.random() < 0.4 then
 				if math.random() < 0.05 and
 				   growing_trees_next_to(currentpos,{ "default:apple" },true) then
-				   minetest.add_node(currentpos,{type="node",name="default:apple"})
+				   minetest.add_node(currentpos, {name="default:apple"})
 				else
-				   minetest.add_node(currentpos,{type="node",name="growing_trees:leaves"})
+				   minetest.add_node(currentpos, {name="growing_trees:leaves"})
 				end
 			end
 		end
@@ -290,7 +290,7 @@ function growing_trees_grow_leaves(pos)
 				if growing_trees_next_to(currentpos,branch_type,true) ~= nil or
 					growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
 					math.random() < 0.2 then
-					minetest.add_node(currentpos,{type="node",name="growing_trees:leaves"})
+					minetest.add_node(currentpos, {name="growing_trees:leaves"})
 				end
 			end
 		end
@@ -312,20 +312,14 @@ function growing_trees_grow_sprout_leaves(pos)
 	for y = pos.y - 1, pos.y + 1 do
 	for z = pos.z - 1, pos.z + 1 do
 		local currentpos = {x = x, y = y, z = z}
-
-		local distance = vector.distance(pos,currentpos)
-
-		if distance <= 1.5 then
+		if vector.distance(pos,currentpos) <= 1.5 then
 			local current_node = minetest.get_node(currentpos)
-
-			if current_node ~= nil and
-				current_node.name == "air" then
-
-				if growing_trees_next_to(currentpos,trunk_type,true) ~= nil or
-					growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
-					math.random() < 0.3 then
-					minetest.add_node(currentpos,{type="node",name="growing_trees:leaves"})
-				end
+			if current_node.name == "air"
+			and (growing_trees_next_to(currentpos,trunk_type,true) ~= nil
+				or growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
+					math.random() < 0.3
+			) then
+				minetest.add_node(currentpos,{name="growing_trees:leaves"})
 			end
 	   end
 	end
@@ -350,7 +344,7 @@ function growing_trees_grow_sprout_leaves(pos)
 					if growing_trees_next_to(currentpos,branch_type,true) ~= nil or
 						growing_trees_next_to(currentpos,leaves_type,true) ~= nil and
 						math.random() < 0.2 then
-						minetest.add_node(currentpos,{type="node",name="growing_trees:leaves"})
+						minetest.add_node(currentpos, {name="growing_trees:leaves"})
 					end
 				end
 			end
